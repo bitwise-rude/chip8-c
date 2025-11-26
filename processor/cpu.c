@@ -2,12 +2,17 @@
 #include "../memory/memory.h"
 #include <stdio.h>
 
-CPU *make_cpu(struct Memory *mem){
-    return &(CPU){
-        .memory = mem,
-        .PC=(REG16){.value=START}
-    };
+void make_cpu(CPU *cpu,struct Memory *mem){
+        cpu->memory = mem;
+        cpu->PC=(REG16){.value=START};
+   
 }
+
+u16 combine_bytes(u8 msb, u8 lsb){
+    return  (((u16)msb<<8 )| (u16)lsb);
+}
+
+
 
 void fill_opcode(Opcode *op_s, u8 *op_v){
     // TODO; some redundant values will be removed later
@@ -24,10 +29,6 @@ void fill_opcode(Opcode *op_s, u8 *op_v){
 
 }
 
-u16 combine_bytes(u8 msb, u8 lsb){
-    return  (((u16)msb<<8 )| (u16)lsb);
-}
-
 
 void step(CPU *cpu){
     // fetch the instruction
@@ -37,7 +38,10 @@ void step(CPU *cpu){
     Opcode op = (Opcode){};
     fill_opcode(&op,opcode);
 
-    printf("THE OPCODE IS %x",*opcode);
+    printf("CURRENTLY EXECUTING: %.4x at PC:%.4x\n",op.opcode,cpu->PC.value);
+
+    // execute the opcode
+
 
     
 

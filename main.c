@@ -50,7 +50,8 @@ int main(int argc, char *argv[]){
     initialize_memory(memory);
 
     // make cpu
-    CPU *cpu = make_cpu((struct Memory*)memory);
+    CPU *cpu = &(CPU){};
+    make_cpu(cpu,(struct Memory*)memory);
     
     //step
     step(cpu);

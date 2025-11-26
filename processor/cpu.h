@@ -42,5 +42,5 @@ typedef struct
   u8 kk; //An 8-bit value, the lowest 8 bits of the instruction
 }Opcode;
 
-CPU *make_cpu( struct Memory*);
+void make_cpu(CPU*, struct Memory*);
 void step(CPU*);
