@@ -55,7 +55,27 @@ void step(CPU *cpu){
             // Set Vx = kk
             cpu->registers[op.x] = op.kk;
             break;
-            
+        case 0x0a:
+            //The value of register I is set to nnn.
+            cpu->I.value = op.nnn;
+            break;
+        case 0x0d:
+            //Display n-byte sprite starting at memory location I at (Vx, Vy), set VF = collision.
+            break;
+        case 0x03:
+            //Skip next instruction if Vx = kk.
+            if (cpu->registers[op.x] == op.kk ) cpu->PC.value +=2;
+            break;
+        case 0x04:
+            //Skip next instruction if Vx != kk.
+            if (cpu->registers[op.x] != op.kk ) cpu->PC.value +=2;
+            break;
+        case 0x05:
+            //Skip next instruction if Vx = Vy.
+            if (cpu->registers[op.x] == cpu->registers[op.y]) cpu->PC.value +=2;
+            break;
+        
+
         default:
             printf("NOT IMPLEMENTED\n");
             exit(0);
