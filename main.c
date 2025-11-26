@@ -48,6 +48,6 @@ int main(int argc, char *argv[]){
     // create ram from the file data
     initialize_memory(memory);
 
-
+    
     return 0;
 }

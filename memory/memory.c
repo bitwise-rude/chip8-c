@@ -21,4 +21,5 @@ Memory *initialize_memory(Memory *memory){
     // now created ram will be the ram
     // we don't have to free this, cuz this won't be in the heap
     memory->ram = ram;
+    memory->len = END + 1;
 }

@@ -1,6 +1,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#pragma once
+
 #define END 0xFFF
 #define START 0x200
 
