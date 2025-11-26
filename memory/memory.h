@@ -18,4 +18,5 @@ typedef struct Memory
 
 
 Memory *initialize_memory(Memory *);
-u8 *at_ram(Memory *ram, u16 addr);
+u8 *get_from_ram(Memory *ram, u16 addr);
+void set_to_ram(Memory *ram, u16 addr, u8 data);

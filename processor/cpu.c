@@ -33,7 +33,7 @@ void fill_opcode(Opcode *op_s, u8 *op_v){
 
 void step(CPU *cpu){
     // fetch the instruction
-    u8 *opcode = at_ram(cpu->memory,cpu->PC.value);
+    u8 *opcode = get_From_ram(cpu->memory,cpu->PC.value);
 
     // create the opcode
     Opcode op = (Opcode){};
@@ -74,6 +74,21 @@ void step(CPU *cpu){
             //Skip next instruction if Vx = Vy.
             if (cpu->registers[op.x] == cpu->registers[op.y]) cpu->PC.value +=2;
             break;
+        case 0x07:
+            //Adds the value kk to the value of register Vx, then stores the result in Vx.
+            cpu->registers[op.x] += op.kk;
+            break;
+        case 0x09:
+            //Skip next instruction if Vx != Vy.
+            if (cpu->registers[op.x] != cpu->registers[op.y]) cpu->PC.value +=2;
+            break;
+        case 0x02:
+            //Call subroutine at nnn.
+            cpu->STACK[cpu->SP] = cpu->PC.value;
+            cpu->SP ++;
+            cpu-> PC.value = op.nnn;
+            
+
         
 
         default:

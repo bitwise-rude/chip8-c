@@ -22,6 +22,7 @@ typedef struct{
     REG16 PC; // Program counter
 
     u8 SP; // Stack Pointer ()
+    u16 STACK[16]; // the actual stack
 
     struct Memory *memory;
 

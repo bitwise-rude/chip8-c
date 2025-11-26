@@ -9,7 +9,7 @@ Memory *initialize_memory(Memory *memory){
     if (!ram) {
         return NULL;
     }
-    
+
     memset(ram,0,0x1000);
 
     // fill the interpreter area with nonsense value 
@@ -32,9 +32,14 @@ Memory *initialize_memory(Memory *memory){
     memory->len = 0x1000;
 }
 
-u8 *at_ram(Memory *ram, u16 addr){
+u8 *get_from_ram(Memory *ram, u16 addr){
     // when fetching opcode, this might cause an issue but whatever
 
     if (addr >END) printf("ILLEGAL INSTRUCTION\n"); 
     else return &ram->ram[addr];
+}
+
+void set_to_ram(Memory *ram, u16 addr, u8 data){
+    if (addr >END) printf("ILLEGAL INSTRUCTION\n"); 
+    else ram->ram[addr] = data;
 }
