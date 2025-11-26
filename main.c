@@ -3,6 +3,7 @@
 #include <stdint.h>
 
 #include "memory/memory.h"
+#include "processor/cpu.h"
 
 typedef uint8_t u8;
 typedef uint16_t u16;
@@ -48,6 +49,11 @@ int main(int argc, char *argv[]){
     // create ram from the file data
     initialize_memory(memory);
 
+    // make cpu
+    CPU *cpu = make_cpu((struct Memory*)memory);
+    
+    //step
+    step(cpu);
     
     return 0;
 }

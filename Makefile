@@ -1,6 +1,6 @@
 CC = gcc 
 CFLAGS = -Wall -Werror -std=c99
-SRC = main.c memory/memory.c
+SRC = main.c memory/memory.c processor/cpu.c
 
 OBJ = $(SRC:.c=.o)
 

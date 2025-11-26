@@ -1,4 +1,5 @@
 #include "memory.h"
+#include <stdio.h>
 
 Memory *initialize_memory(Memory *memory){
     // TODO: make digits later
@@ -22,4 +23,11 @@ Memory *initialize_memory(Memory *memory){
     // we don't have to free this, cuz this won't be in the heap
     memory->ram = ram;
     memory->len = END + 1;
+}
+
+u8 *at_ram(Memory *ram, u16 addr){
+    // when fetching opcode, this might cause an issue but whatever
+
+    if (addr >END) printf("ILLEGAL INSTRUCTION\n"); 
+    else return &ram->ram[addr];
 }
