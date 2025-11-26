@@ -33,7 +33,7 @@ void fill_opcode(Opcode *op_s, u8 *op_v){
 
 void step(CPU *cpu){
     // fetch the instruction
-    u8 *opcode = get_From_ram(cpu->memory,cpu->PC.value);
+    u8 *opcode = get_from_ram(cpu->memory,cpu->PC.value);
 
     // create the opcode
     Opcode op = (Opcode){};
@@ -51,46 +51,124 @@ void step(CPU *cpu){
             // Jump to location nnn.
             cpu->PC.value = op.nnn;
             break;
+
         case 0x06:
             // Set Vx = kk
             cpu->registers[op.x] = op.kk;
             break;
+
         case 0x0a:
             //The value of register I is set to nnn.
             cpu->I.value = op.nnn;
             break;
+
         case 0x0d:
             //Display n-byte sprite starting at memory location I at (Vx, Vy), set VF = collision.
             break;
+
         case 0x03:
             //Skip next instruction if Vx = kk.
             if (cpu->registers[op.x] == op.kk ) cpu->PC.value +=2;
             break;
+
         case 0x04:
             //Skip next instruction if Vx != kk.
             if (cpu->registers[op.x] != op.kk ) cpu->PC.value +=2;
             break;
+
         case 0x05:
             //Skip next instruction if Vx = Vy.
             if (cpu->registers[op.x] == cpu->registers[op.y]) cpu->PC.value +=2;
             break;
+
         case 0x07:
             //Adds the value kk to the value of register Vx, then stores the result in Vx.
             cpu->registers[op.x] += op.kk;
             break;
+
         case 0x09:
             //Skip next instruction if Vx != Vy.
             if (cpu->registers[op.x] != cpu->registers[op.y]) cpu->PC.value +=2;
             break;
+
         case 0x02:
             //Call subroutine at nnn.
             cpu->STACK[cpu->SP] = cpu->PC.value;
             cpu->SP ++;
             cpu-> PC.value = op.nnn;
-            
+            break;
+        
+        case 0x0:
+            // two cases
+            if(op.kk == 0xEE){
+                //Return from a subroutine.
+                cpu->SP--;
+                cpu->PC.value = cpu->STACK[cpu->SP];
+                break;
+            }
+        
+        case 0x8:
+            // many cases
+            if(op.n == 0){
+                // Set Vx = Vy.
+                cpu->registers[op.x] = cpu->registers[op.y];
+                break;
+            }
+            else if(op.n == 1){
+                // Set Vx =Vx | Vy.
+                cpu->registers[op.x] |= cpu->registers[op.y];
+                break;
+            }
+            else if(op.n == 2){
+                // Set Vx = VX &Vy.
+                cpu->registers[op.x] &= cpu->registers[op.y];
+                break;
+            }
+            else if(op.n == 3){
+                // Set Vx = VX  XOR Vy.
+                cpu->registers[op.x] ^= cpu->registers[op.y];
+                break;
+            }
+            else if(op.n == 4){
+                // Set Vx = VX + Vy.
+                uint16_t sum = cpu->registers[op.x] + cpu->registers[op.y];
+                cpu->registers[0xF] = (sum > 0xFF) ? 1 : 0;
+                cpu->registers[op.x] = (uint8_t)sum;
+                break;
+            }
+            else if(op.n == 5){
+                // set Vx = Vx - Vy
+                uint8_t vx = cpu->registers[op.x];
+                uint8_t vy = cpu->registers[op.y];
+                cpu->registers[0xF] = (vx >= vy) ? 1 : 0;
+                cpu->registers[op.x] = (uint8_t)(vx - vy);
+                break;
+            }
+            else if(op.n == 6){
+                // Set Vx = Vx SHR 1.
+                uint8_t vx = cpu->registers[op.x];
+                cpu->registers[0xF] = vx & 0x01;
+                cpu->registers[op.x] = vx >> 1;
+                break;
+            }
+            else if(op.n == 7){
+                // set Vx = Vy - Vx
+                uint8_t vx = cpu->registers[op.x];
+                uint8_t vy = cpu->registers[op.y];
+                cpu->registers[0xF] = (vy >= vx) ? 1 : 0;
+                cpu->registers[op.x] = (uint8_t)(vy - vx);
+                break;
+            }
+            else if(op.n == 0xE){
+                // Set Vx = Vx SHL 1.
+                uint8_t vx = cpu->registers[op.x];
+                cpu->registers[0xF] = (vx >> 7) & 1;
+                cpu->registers[op.x] = vx << 1;
+                break;
+            }
+
 
         
-
         default:
             printf("NOT IMPLEMENTED\n");
             exit(0);

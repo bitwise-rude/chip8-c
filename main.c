@@ -58,7 +58,7 @@ int main(int argc, char *argv[]){
     make_cpu(cpu,(struct Memory*)memory);
     
     //step
-    for(int i =0;i<=100;i++){    step(cpu);}
+    for(int i =0;i<=600;i++){    step(cpu);}
     
     return 0;
 }
