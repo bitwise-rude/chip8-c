@@ -131,37 +131,37 @@ void step(CPU *cpu){
             }
             else if(op.n == 4){
                 // Set Vx = VX + Vy.
-                uint16_t sum = cpu->registers[op.x] + cpu->registers[op.y];
+                u16 sum = cpu->registers[op.x] + cpu->registers[op.y];
                 cpu->registers[0xF] = (sum > 0xFF) ? 1 : 0;
                 cpu->registers[op.x] = (uint8_t)sum;
                 break;
             }
             else if(op.n == 5){
                 // set Vx = Vx - Vy
-                uint8_t vx = cpu->registers[op.x];
-                uint8_t vy = cpu->registers[op.y];
+                u8 vx = cpu->registers[op.x];
+                u8 vy = cpu->registers[op.y];
                 cpu->registers[0xF] = (vx >= vy) ? 1 : 0;
                 cpu->registers[op.x] = (uint8_t)(vx - vy);
                 break;
             }
             else if(op.n == 6){
                 // Set Vx = Vx SHR 1.
-                uint8_t vx = cpu->registers[op.x];
+                u8 vx = cpu->registers[op.x];
                 cpu->registers[0xF] = vx & 0x01;
                 cpu->registers[op.x] = vx >> 1;
                 break;
             }
             else if(op.n == 7){
                 // set Vx = Vy - Vx
-                uint8_t vx = cpu->registers[op.x];
-                uint8_t vy = cpu->registers[op.y];
+                u8 vx = cpu->registers[op.x];
+                u8 vy = cpu->registers[op.y];
                 cpu->registers[0xF] = (vy >= vx) ? 1 : 0;
                 cpu->registers[op.x] = (uint8_t)(vy - vx);
                 break;
             }
             else if(op.n == 0xE){
                 // Set Vx = Vx SHL 1.
-                uint8_t vx = cpu->registers[op.x];
+                u8 vx = cpu->registers[op.x];
                 cpu->registers[0xF] = (vx >> 7) & 1;
                 cpu->registers[op.x] = vx << 1;
                 break;
@@ -181,6 +181,16 @@ void step(CPU *cpu){
                 for(int i=0;i<=op.x;i++){
                     cpu->registers[i] = *get_from_ram(cpu->memory,cpu->I.value + i);
                 }
+                break;
+            }
+            else if(op.kk == 0x33){
+                //Store BCD representation of Vx in memory locations I, I+1, and I+2.
+
+                u8 val = cpu->registers[op.x];
+
+                set_to_ram(cpu->memory, cpu->I.value + 0, val / 100);   
+                set_to_ram(cpu->memory, cpu->I.value + 1, (val/ 10) % 10);
+                set_to_ram(cpu->memory, cpu->I.value + 2, val % 10);  
                 break;
             }
             
