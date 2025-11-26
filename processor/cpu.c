@@ -166,6 +166,24 @@ void step(CPU *cpu){
                 cpu->registers[op.x] = vx << 1;
                 break;
             }
+        
+        case 0xF:
+            // many of F too
+            if(op.kk == 0x55){
+                //Store registers V0 through Vx in memory starting at location I.
+                for(int i=0;i<=op.x;i++){
+                    set_to_ram(cpu->memory,cpu->I.value + i, cpu->registers[i]);
+                }
+                break;
+            }
+            else if(op.kk == 0x65){
+                //Read registers V0 through Vx from memory starting at location I.
+                for(int i=0;i<=op.x;i++){
+                    cpu->registers[i] = *get_from_ram(cpu->memory,cpu->I.value + i);
+                }
+                break;
+            }
+            
 
 
         
