@@ -18,7 +18,7 @@ void show_err(const char *err){
     exit(EXIT_FAILURE);
 }
 
-Memory  *data_from_file(const char *file_name){
+void *data_from_file(const char *file_name,Memory *mem){
     
     FILE *fp = fopen(file_name,"rb");
 
@@ -34,7 +34,8 @@ Memory  *data_from_file(const char *file_name){
     if (buffer == NULL)show_err("Memory Allocation Failed.");
     fread(buffer,1,len,fp);
 
-    return &(Memory){len,buffer};
+    mem->ram = buffer;
+    mem->len = len;
 
 }
 
@@ -44,7 +45,10 @@ int main(int argc, char *argv[]){
     if (argc < 2) show_err("Provide ROM File location");
 
     // read file data
-    Memory *memory = data_from_file(argv[1]);
+    Memory *memory = &(Memory){};
+    data_from_file(argv[1],memory);
+
+    if (memory == NULL) show_err("Memory Allocation Failed");
 
     // create ram from the file data
     initialize_memory(memory);
@@ -54,7 +58,7 @@ int main(int argc, char *argv[]){
     make_cpu(cpu,(struct Memory*)memory);
     
     //step
-    step(cpu);
+    for(int i =0;i<=100;i++){    step(cpu);}
     
     return 0;
 }

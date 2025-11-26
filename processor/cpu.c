@@ -25,6 +25,7 @@ void fill_opcode(Opcode *op_s, u8 *op_v){
     op_s->x = op_s->msb & 0x0F;
     op_s->y = op_s->lsb >> 4 ;
     op_s->kk = op_s->lsb;
+    op_s->a = (u8)((op_s->msb & 0xF0)>>4);
 
 
 }
@@ -40,10 +41,24 @@ void step(CPU *cpu){
 
     printf("CURRENTLY EXECUTING: %.4x at PC:%.4x\n",op.opcode,cpu->PC.value);
 
+    //increment PC
+    cpu->PC.value +=2;
+
+
     // execute the opcode
-
-
-    
-
+    switch(op.a){
+        case 0x01:
+            // Jump to location nnn.
+            cpu->PC.value = op.nnn;
+            break;
+        case 0x06:
+            // Set Vx = kk
+            cpu->registers[op.x] = op.kk;
+            break;
+            
+        default:
+            printf("NOT IMPLEMENTED\n");
+            exit(0);
+    }
 
 }

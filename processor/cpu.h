@@ -16,7 +16,7 @@ typedef union{
 }REG16;
 
 typedef struct{
-    u8 *registers[16]; // 16 registers 0 TO F
+    u8 registers[16]; // 16 registers 0 TO F
 
     REG16 I; // I register
     REG16 PC; // Program counter
@@ -40,6 +40,8 @@ typedef struct
   u8 y; //A 4-bit value, the upper 4 bits of the low byte of the instruction
 
   u8 kk; //An 8-bit value, the lowest 8 bits of the instruction
+
+  u8 a; // high nibble of the high byte
 }Opcode;
 
 void make_cpu(CPU*, struct Memory*);

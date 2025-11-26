@@ -1,19 +1,26 @@
 #include "memory.h"
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 Memory *initialize_memory(Memory *memory){
     // TODO: make digits later
-    u8 ram[0x1000] = {0};
+    u8 *ram = malloc(0x1000);
+    if (!ram) {
+        return NULL;
+    }
+    
+    memset(ram,0,0x1000);
 
     // fill the interpreter area with nonsense value 
     // TODO: change this to fill it with digits
-    for (int i=0; i<START;i++){
-        ram[i] = 0x0;
-    }
+    // for (int i=0; i<START;i++){
+    //     ram[i] = 0x0;
+    // }
 
     // filling the rest with our rom
-    for (int i = START; i< (START + memory->len); i++){
-        ram[i] = memory->ram[i];
+    for (int i = 0; i < memory->len; i++) {
+        ram[START + i] = memory->ram[i];
     }
     
     // free the original ram
@@ -22,7 +29,7 @@ Memory *initialize_memory(Memory *memory){
     // now created ram will be the ram
     // we don't have to free this, cuz this won't be in the heap
     memory->ram = ram;
-    memory->len = END + 1;
+    memory->len = 0x1000;
 }
 
 u8 *at_ram(Memory *ram, u16 addr){
