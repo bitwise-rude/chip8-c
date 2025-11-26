@@ -1,10 +1,16 @@
 #include "cpu.h"
 #include "../memory/memory.h"
 #include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+
+
 
 void make_cpu(CPU *cpu,struct Memory *mem){
         cpu->memory = mem;
         cpu->PC=(REG16){.value=START};
+        cpu->DT = 0;
+        cpu->dt_start = clock();
    
 }
 
@@ -17,6 +23,7 @@ u16 combine_bytes(u8 msb, u8 lsb){
 void fill_opcode(Opcode *op_s, u8 *op_v){
     // TODO; some redundant values will be removed later
     op_s->msb = *op_v;
+    
     op_s->lsb = *(op_v+1);
 
     op_s->opcode = combine_bytes(op_s->msb,op_s->lsb);
@@ -64,6 +71,7 @@ void step(CPU *cpu){
 
         case 0x0d:
             //Display n-byte sprite starting at memory location I at (Vx, Vy), set VF = collision.
+            // TODO
             break;
 
         case 0x03:
@@ -193,13 +201,45 @@ void step(CPU *cpu){
                 set_to_ram(cpu->memory, cpu->I.value + 2, val % 10);  
                 break;
             }
-            
+            else if (op.kk == 0x29)
+            {
+                //Set I = location of sprite for digit Vx. TODO
+                break;
+            }
+            else if (op.kk == 0x15){
+                //Set delay timer = Vx
+                cpu->DT = cpu->registers[op.x];
+                break;
+            }
+            else if (op.kk == 0x07){
+                //Set Vx = delay timer value.
+                cpu->registers[op.x] = cpu->DT;
+                break;
+            }
 
-
+        case 0xC:
+            cpu->registers[op.x] = (u8) op.kk &  (u8)(rand()%256);
+            break;
         
+        case 0xE:
+            // to implement
+            break;
+
         default:
             printf("NOT IMPLEMENTED\n");
             exit(0);
+    }
+
+    //check for timers:
+    //for dt
+    // TODO: if instruction take more than 16 ms to complete
+    if (cpu->DT != 0) {
+        float elapsed = (float)(clock() - cpu->dt_start) * 1000 / CLOCKS_PER_SEC; // ms
+        if (elapsed >= 16.667) {
+            cpu->DT--;
+            cpu->dt_start = clock(); 
+            
+        }
     }
 
 }

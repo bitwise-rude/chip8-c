@@ -1,5 +1,7 @@
 #include <stdint.h>
 #include <stdlib.h>
+#include <time.h>
+
 
 #pragma once
 
@@ -25,6 +27,10 @@ typedef struct{
     u16 STACK[16]; // the actual stack
 
     struct Memory *memory;
+
+    u8 DT; // DElay timer
+    clock_t dt_start ; // delay timer start time
+    u8 ST; // SOund timer
 
 }CPU;
 

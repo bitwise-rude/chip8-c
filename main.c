@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+
 #include "memory/memory.h"
 #include "processor/cpu.h"
 
@@ -41,6 +42,7 @@ void *data_from_file(const char *file_name,Memory *mem){
 
 
 int main(int argc, char *argv[]){
+    srand(time(NULL)); // random number
 
     if (argc < 2) show_err("Provide ROM File location");
 
@@ -58,7 +60,7 @@ int main(int argc, char *argv[]){
     make_cpu(cpu,(struct Memory*)memory);
     
     //step
-    for(int i =0;i<=600;i++){    step(cpu);}
+    for(int i =0;i<=600000;i++){    step(cpu);}
     
     return 0;
 }
