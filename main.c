@@ -8,6 +8,7 @@ typedef uint8_t u8;
 typedef uint16_t u16;
 
 
+
 void show_err(const char *err){
     fprintf(stderr,
             "CHIP-8 Emulator\nError: %s\n",
@@ -16,7 +17,7 @@ void show_err(const char *err){
     exit(EXIT_FAILURE);
 }
 
-RAM *ram_from_file(const char *file_name){
+Memory  *data_from_file(const char *file_name){
     
     FILE *fp = fopen(file_name,"rb");
 
@@ -32,7 +33,7 @@ RAM *ram_from_file(const char *file_name){
     if (buffer == NULL)show_err("Memory Allocation Failed.");
     fread(buffer,1,len,fp);
 
-    return &(RAM){len,buffer};
+    return &(Memory){len,buffer};
 
 }
 
@@ -41,8 +42,12 @@ int main(int argc, char *argv[]){
 
     if (argc < 2) show_err("Provide ROM File location");
 
-    RAM *ram = ram_from_file(argv[1]);
+    // read file data
+    Memory *memory = data_from_file(argv[1]);
 
-    free(ram->ram);
+    // create ram from the file data
+    initialize_memory(memory);
+
+
     return 0;
 }

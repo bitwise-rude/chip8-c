@@ -1,12 +1,20 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#define END 0xFFF
+#define START 0x200
+
 typedef uint8_t u8;
 typedef uint16_t u16;
 
 
-typedef struct RAM
+typedef struct
 {
     size_t len; // length of ram from file
-    u8 *ram;   // ram from file
-}RAM;
+    u8 *ram;   // final ram
+}Memory;
+
+
+
+
+Memory *initialize_memory(Memory *);
