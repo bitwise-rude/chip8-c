@@ -29,7 +29,7 @@ https://github.com/Timendus/chip8-test-suite
 -----
 
 ```diff
-- Note: There are some instructions which differ from implementations and sources but they don't matter that much. 
+- Note: There are some instructions which differ from implementations and sources about the affection of flags and sometimes even how instructions affect registers. 
 ```
 
 ------
