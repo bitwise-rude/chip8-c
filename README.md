@@ -1,10 +1,58 @@
-# Chip 8 
-I present a very bad chip-8 interpreter written in C.
+# CHIP-8
+CHIP8 is an interpreted language which was used for making DIY Games back in the early 70s and late 60s. Emulating the system is always a fun thing to do when you are bored or trying to learn a new language
 
-It did surprisingly well on the test I performed on it.
+My Implementation of CHIP8 is not really that good but it works and has passed most of the tests I found online.
 
+--- 
 
+## Screenshots
+![alt text](screenshots/image.png)
 
-The reference taken for this are:
-- my own python chip8 implementation (this is a very unorganized and slow interpreter since i tried to create it in a day)
-- Cowdog's Chip - 8 technical reference - http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
+![alt text](screenshots/image2.png)
+
+---
+## Notes
+- This has been tested in Linux (Debian).
+- I have tested 10 sample ROMs. They seem to be all working.
+- There are some instructions which are not correctly interpreted by the CPU.
+
+----
+## References
+- Cowgod's CHIP-8 Technical References
+http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
+
+- Timendus' CHIP-8 Test Suite
+https://github.com/Timendus/chip8-test-suite
+
+> These are life saver, I would encourage to use Timendus' tests to verify instructions are correctly being interpreted.
+
+-----
+
+###### ==Note: There are some instructions which differ from implementations and sources but they don't matter that much.==
+
+------
+
+## Building Requirements:
+1. SDL2 is needed since graphics depends upon it.
+2. Use any C compiler.
+3. Use makefile to build executable.
+
+```bash
+# in the main project folder
+make
+```
+
+#### Run the emulator
+```bash
+
+./chip8 roms/6-keypad.ch8
+```
+
+> Other ROMs can be found through a simple google search.
+
+----
+
+## TODO:
+- [ ] Improve Instruction Handeling
+- [ ] Timing issues still persists, have to fix them.
+- [ ] Improve codes, since there are many loop holes.
