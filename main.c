@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-
+#include "graphics/graphics.h"
 
 #include "memory/memory.h"
 #include "processor/cpu.h"
@@ -19,7 +19,7 @@ void show_err(const char *err){
     exit(EXIT_FAILURE);
 }
 
-void *data_from_file(const char *file_name,Memory *mem){
+void data_from_file(const char *file_name,Memory *mem){
     
     FILE *fp = fopen(file_name,"rb");
 
@@ -37,7 +37,6 @@ void *data_from_file(const char *file_name,Memory *mem){
 
     mem->ram = buffer;
     mem->len = len;
-
 }
 
 
@@ -58,6 +57,12 @@ int main(int argc, char *argv[]){
     // make cpu
     CPU *cpu = &(CPU){};
     make_cpu(cpu,(struct Memory*)memory);
+
+    // create graphics
+    Screen screen = (Screen){};
+    initialize_window(&screen);
+
+    if(screen.win == NULL) show_err("Error while creating the window");
     
     //step
     for(int i =0;i<=600000;i++){    step(cpu);}
