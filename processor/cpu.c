@@ -14,7 +14,7 @@ void make_cpu(CPU *cpu,struct Memory *mem,struct Screen *scrn){
         cpu->DT = 0;
         cpu->is_halted = 0;
         cpu->dt_start = clock();
-   
+        cpu->st_start = clock();
 }
 
 u16 combine_bytes(u8 msb, u8 lsb){
@@ -51,6 +51,23 @@ void check_for_timers(CPU *cpu){
             cpu->dt_start = clock(); 
             
         }
+    }
+
+    // for st
+    if (cpu->ST != 0 ){
+        SDL_PauseAudio(0);
+        float elapsed = (float)(clock() - cpu->dt_start) * 1000 / CLOCKS_PER_SEC; // ms
+        if (elapsed >= 16.667) {
+            cpu->DT--;
+            cpu->dt_start = clock(); 
+
+            // alos play the sound
+
+        }
+
+    }
+    else{
+        SDL_PauseAudio(1);
     }
 }
 
@@ -182,16 +199,19 @@ void step(CPU *cpu){
             else if(op.n == 1){
                 // Set Vx =Vx | Vy.
                 cpu->registers[op.x] |= cpu->registers[op.y];
+                cpu->registers[0xF] = 0; 
                 break;
             }
             else if(op.n == 2){
                 // Set Vx = VX &Vy.
                 cpu->registers[op.x] &= cpu->registers[op.y];
+                cpu->registers[0xF] = 0; 
                 break;
             }
             else if(op.n == 3){
                 // Set Vx = VX  XOR Vy.
                 cpu->registers[op.x] ^= cpu->registers[op.y];
+                cpu->registers[0xF] = 0; 
                 break;
             }
             else if(op.n == 4){
@@ -241,6 +261,7 @@ void step(CPU *cpu){
                 for(int i=0;i<=op.x;i++){
                     set_to_ram(cpu->memory,cpu->I.value + i, cpu->registers[i]);
                 }
+
                 break;
             }
             else if(op.kk == 0x65){
@@ -248,6 +269,7 @@ void step(CPU *cpu){
                 for(int i=0;i<=op.x;i++){
                     cpu->registers[i] = *get_from_ram(cpu->memory,cpu->I.value + i);
                 }
+
                 break;
             }
             else if(op.kk == 0x33){
@@ -269,6 +291,11 @@ void step(CPU *cpu){
             else if (op.kk == 0x15){
                 //Set delay timer = Vx
                 cpu->DT = cpu->registers[op.x];
+                break;
+            }
+            else if (op.kk == 0x15){
+                //Set sound timer = Vx
+                cpu->ST = cpu->registers[op.x];
                 break;
             }
             else if (op.kk == 0x07){

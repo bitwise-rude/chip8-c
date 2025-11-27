@@ -27,6 +27,10 @@ typedef struct Screen{
 
     u8 key_states[16];
 
+    // for audio
+    SDL_AudioSpec want, have;
+
+
 }Screen;
 
 void initialize_window(Screen *screen);

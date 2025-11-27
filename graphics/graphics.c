@@ -19,11 +19,31 @@ SDL_Keycode chip8_keymap[16] = {
     SDLK_v   // F
 };
 
+void square_wave_playback(void *userdata, Uint8 *stream, int len){
+    static int toggle = 0;
+
+    for (int i = 0; i < len; i++) {
+        stream[i] = toggle ? 255 : 0; 
+        toggle = !toggle;
+    }
+}
+
 void initialize_window(Screen *screen){
     // initialize key states
     for (int i =0; i<16; i++){
         screen->key_states[i] = 0;
     }
+
+    // initialize audio
+    SDL_zero(screen->want);
+    screen->want.freq = 44100;           // sample rate
+    screen->want.format = AUDIO_U8;      // unsigned 8-bit samples
+    screen->want.channels = 1;           // mono
+    screen->want.samples = 1024;         // buffer size
+    screen->want.callback = square_wave_playback;
+
+    SDL_OpenAudio(&screen->want, &screen->have);
+
 
     if(SDL_Init(SDL_INIT_VIDEO) != 0){
         screen->win = NULL;

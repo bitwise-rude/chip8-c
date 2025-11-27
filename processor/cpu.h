@@ -29,8 +29,10 @@ typedef struct{
     struct Memory *memory;
 
     u8 DT; // DElay timer
+    u8 ST;  // Sound timer
     clock_t dt_start ; // delay timer start time
-    u8 ST; // SOund timer
+    clock_t st_start; // sound timer start time
+
 
     struct Screen *screen;
 
