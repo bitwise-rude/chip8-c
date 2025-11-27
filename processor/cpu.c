@@ -57,7 +57,6 @@ void step(CPU *cpu){
     //increment PC
     cpu->PC.value +=2;
 
-
     // execute the opcode
     switch(op.a){
         case 0x01:
@@ -144,6 +143,7 @@ void step(CPU *cpu){
             else if(op.kk == 0xE0)
             {
                 // clear the screen
+                
                 clear_matrix(cpu->screen);
                 break;
             }
@@ -256,6 +256,7 @@ void step(CPU *cpu){
 
             else if (op.kk == 0x1E){
                 cpu->I.value += cpu->registers[op.x];
+                break;
             }
 
             else if (op.kk == 0x0A){
@@ -268,14 +269,15 @@ void step(CPU *cpu){
                     
                     step_graphics(cpu->screen);
                  }
+                 break;
             }
 
         case 0xC:
             cpu->registers[op.x] = (u8) op.kk &  (u8)(rand()%256);
             break;
         
-        case 0xE:
-            if(op.kk = 0x9E){
+        case 0xe:
+            if(op.kk == 0x9E){
                 //Skip next instruction if key with the value of Vx is pressed.
                 //TODO see Vx is less tham 15 or not
 
@@ -283,7 +285,7 @@ void step(CPU *cpu){
 
                 break;
             }
-            else if (op.kk = 0xA1){
+            else if (op.kk == 0xa1){
                 if(cpu->screen->key_states[cpu->registers[op.x]] == 0) cpu->PC.value +=2;
                 break;
             }

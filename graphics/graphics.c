@@ -80,7 +80,7 @@ int draw_byte(Screen *scr, u8 byte_to_draw, int x, int y) {
 void clear_matrix(Screen *scr){
     for (int i = 0; i < D_HEIGHT; i++) {
         for (int j = 0; j < D_WIDTH; j++) {
-            scr->display_grid[i][j] = 0;
+            scr->display_grid[j][i] = 0;
         }
     draw_matrix(scr);
 }
@@ -89,8 +89,8 @@ void clear_matrix(Screen *scr){
 
 void draw_matrix(Screen *scr)
 {
-    // SDL_SetRenderDrawColor(scr->ren, 0, 0, 0, 255); 
-    // SDL_RenderClear(scr->ren);
+    SDL_SetRenderDrawColor(scr->ren, 0, 0, 0, 255); 
+    SDL_RenderClear(scr->ren);
 
     SDL_SetRenderDrawColor(scr->ren, 0, 255, 0, 255); 
 
