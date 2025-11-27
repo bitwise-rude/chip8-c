@@ -73,7 +73,7 @@ int main(int argc, char *argv[]){
 
           int g = step_graphics(&screen);
            if (g == -1) running = 0;
-
+        // SDL_Delay(1);
         }
 
     delete_everything(&screen);
