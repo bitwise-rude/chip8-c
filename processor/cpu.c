@@ -239,9 +239,9 @@ void step(CPU *cpu){
             }
             else if (op.kk == 0x29)
             {
-                //Set I = location of sprite for digit Vx. TODO
-                
-             
+                //Set I = location of sprite for digit Vx. 
+                cpu->I.value = (u16)(*get_from_ram(cpu->memory, 0x0000 + 5 * cpu->registers[op.x]));
+                break;
             }
             else if (op.kk == 0x15){
                 //Set delay timer = Vx
@@ -253,8 +253,21 @@ void step(CPU *cpu){
                 cpu->registers[op.x] = cpu->DT;
                 break;
             }
+
             else if (op.kk == 0x1E){
                 cpu->I.value += cpu->registers[op.x];
+            }
+
+            else if (op.kk == 0x0A){
+                //Wait for a key press, store the value of the key in Vx.
+                int running = 1;
+                while(running){
+                    for(int i =0; i<16; i++){
+                        if(cpu->screen->key_states[i] == 1) running = 0;
+                    }
+                    
+                    step_graphics(cpu->screen);
+                 }
             }
 
         case 0xC:
@@ -262,7 +275,18 @@ void step(CPU *cpu){
             break;
         
         case 0xE:
-            // to implement
+            if(op.kk = 0x9E){
+                //Skip next instruction if key with the value of Vx is pressed.
+                //TODO see Vx is less tham 15 or not
+
+                if(cpu->screen->key_states[cpu->registers[op.x]] == 1) cpu->PC.value +=2;
+
+                break;
+            }
+            else if (op.kk = 0xA1){
+                if(cpu->screen->key_states[cpu->registers[op.x]] == 0) cpu->PC.value +=2;
+                break;
+            }
           
         
         case 0xB:

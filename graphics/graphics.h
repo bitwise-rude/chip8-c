@@ -1,3 +1,5 @@
+#pragma once
+
 #include <SDL2/SDL.h>
 #include <stdint.h>
 
@@ -11,6 +13,8 @@
 #define WIDTH (D_WIDTH*ENLARGEMENT)
 #define HEIGHT (D_HEIGHT * ENLARGEMENT)
 
+
+
 typedef uint8_t u8;
 
 
@@ -20,6 +24,8 @@ typedef struct Screen{
     SDL_Event e;
 
     u8 display_grid[D_WIDTH][D_HEIGHT];
+
+    u8 key_states[16];
 
 }Screen;
 

@@ -1,6 +1,29 @@
 #include "graphics.h"
 
+SDL_Keycode chip8_keymap[16] = {
+    SDLK_x,   //0
+    SDLK_1,  // 1
+    SDLK_2,  // 2
+    SDLK_3,  // 3
+    SDLK_q,  // 4
+    SDLK_w,  // 5
+    SDLK_e,  // 6
+    SDLK_a,  // 7
+    SDLK_s,  // 8
+    SDLK_d,  // 9
+    SDLK_z,  // A
+    SDLK_c,  // B
+    SDLK_4,  // C
+    SDLK_r,  // D
+    SDLK_f,  // E
+    SDLK_v   // F
+};
+
 void initialize_window(Screen *screen){
+    // initialize key states
+    for (int i =0; i<16; i++){
+        screen->key_states[i] = 0;
+    }
 
     if(SDL_Init(SDL_INIT_VIDEO) != 0){
         screen->win = NULL;
@@ -82,10 +105,28 @@ void draw_matrix(Screen *scr)
         SDL_RenderPresent(scr->ren);  
 }
 
+
+
 int step_graphics(Screen *scr){
     if(SDL_PollEvent(&scr->e)){
         if(scr->e.type == SDL_QUIT){
                 return -1;
+        }
+        else if (scr->e.type == SDL_KEYDOWN){
+            for (int i=0; i<16; i++){
+                if (scr->e.key.keysym.sym == chip8_keymap[i]){
+                        scr->key_states[i] = 1;
+                        break;
+                }
+            }
+        }
+        else if (scr->e.type == SDL_KEYUP){
+            for (int i=0; i<16; i++){
+                if (scr->e.key.keysym.sym == chip8_keymap[i]){
+                        scr->key_states[i] = 0;
+                        break;
+                }
+            }
         }
     }
 
