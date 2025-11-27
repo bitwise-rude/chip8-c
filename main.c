@@ -54,15 +54,16 @@ int main(int argc, char *argv[]){
     // create ram from the file data
     initialize_memory(memory);
 
-    // make cpu
-    CPU *cpu = &(CPU){};
-    make_cpu(cpu,(struct Memory*)memory);
-
     // create graphics
     Screen screen = (Screen){};
     initialize_window(&screen);
 
     if(screen.win == NULL) show_err("Error while creating the window");
+
+    // make cpu
+    CPU *cpu = &(CPU){};
+    make_cpu(cpu,(struct Memory*)memory,&screen);
+
     
     //step
     for(int i =0;i<=600000;i++){  

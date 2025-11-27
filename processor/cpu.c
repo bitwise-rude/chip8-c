@@ -1,13 +1,15 @@
 #include "cpu.h"
 #include "../memory/memory.h"
+#include "../graphics/graphics.h"
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
 
 
 
-void make_cpu(CPU *cpu,struct Memory *mem){
+void make_cpu(CPU *cpu,struct Memory *mem,struct Screen *scrn){
         cpu->memory = mem;
+        cpu->screen = scrn;
         cpu->PC=(REG16){.value=START};
         cpu->DT = 0;
         cpu->dt_start = clock();
@@ -71,7 +73,26 @@ void step(CPU *cpu){
 
         case 0x0d:
             //Display n-byte sprite starting at memory location I at (Vx, Vy), set VF = collision.
-            // TODO
+            {
+                u8 x = cpu->registers[op.x];
+                u8 y = cpu->registers[op.y];
+                
+                cpu->registers[0xF] = 0;
+                int collided = 0;
+                
+
+                // TODO maybe do pointeer airthmentic here
+                for (int i = 0; i<op.n; i++){
+                    collided = draw_byte(cpu->screen,
+                             *get_from_ram(cpu->memory,cpu->I.value + i),
+                             x,y+i); 
+
+                    if (collided) cpu->registers[0xF] = 1;
+                }
+
+                draw_matrix(cpu->screen);
+        
+            }
             break;
 
         case 0x03:

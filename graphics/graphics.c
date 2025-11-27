@@ -35,16 +35,45 @@ void delete_everything(Screen *scr){
     SDL_Quit();
 }
 
+int draw_byte(Screen *scr, u8 byte_to_draw,u8 x,u8 y){
+    int collision = 0;
+    for (int bit = 0; bit < 8; bit++) {
+        int px = (x + bit) % 64;
+        int py = y % 32;
+
+        uint8_t pixel = (byte_to_draw & (0x80 >> bit)) != 0;
+
+        if (pixel) {
+            if (scr->display_grid[px][py] == 1) collision = 1;
+            scr->display_grid[px][py] ^= 1;
+        }
+    }
+    return collision;
+}
+
+void draw_matrix(Screen *scr)
+{
+    SDL_SetRenderDrawColor(scr->ren, 0, 255, 0, 255); 
+    for (int y = 0; y < D_HEIGHT; y++) {
+            for (int x = 0; x < D_WIDTH; x++) {
+                if (scr->display_grid[x][y]) {
+                    SDL_Rect rect = { x * ENLARGEMENT, y * ENLARGEMENT, ENLARGEMENT, ENLARGEMENT };
+                    SDL_RenderFillRect(scr->ren, &rect);
+                }
+            }
+        }
+
+        SDL_RenderPresent(scr->ren);
+}
+
 int step_graphics(Screen *scr){
-    SDL_SetRenderDrawColor(scr->ren, 0, 100, 255, 255);
     if(SDL_PollEvent(&scr->e)){
         if(scr->e.type == SDL_QUIT){
                 delete_everything(scr);
                 return -1;
         }
     }
-    SDL_RenderClear(scr->ren);
-    SDL_RenderPresent(scr->ren);
+
     return 1;
 }
 

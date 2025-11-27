@@ -32,6 +32,8 @@ typedef struct{
     clock_t dt_start ; // delay timer start time
     u8 ST; // SOund timer
 
+    struct Screen *screen;
+
 }CPU;
 
 typedef struct 
@@ -51,5 +53,5 @@ typedef struct
   u8 a; // high nibble of the high byte
 }Opcode;
 
-void make_cpu(CPU*, struct Memory*);
+void make_cpu(CPU*, struct Memory*,struct Screen*);
 void step(CPU*);
