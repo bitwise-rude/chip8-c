@@ -28,7 +28,7 @@ https://github.com/Timendus/chip8-test-suite
 
 -----
 
-###### ==Note: There are some instructions which differ from implementations and sources but they don't matter that much.==
+==Note: There are some instructions which differ from implementations and sources but they don't matter that much.==
 
 ------
 
