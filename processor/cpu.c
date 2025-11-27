@@ -78,23 +78,23 @@ void step(CPU *cpu){
         case 0x0d:
             //Display n-byte sprite starting at memory location I at (Vx, Vy), set VF = collision.
             {
-                u8 x = cpu->registers[op.x];
-                u8 y = cpu->registers[op.y];
+                int x = cpu->registers[op.x];
+                int y = cpu->registers[op.y];
                 
                 cpu->registers[0xF] = 0;
                 int collided = 0;
                 
 
                 // TODO maybe do pointeer airthmentic here
-                for (int i = 0; i<op.n; i++){
-                    collided = draw_byte(cpu->screen,
-                             *get_from_ram(cpu->memory,cpu->I.value + i),
-                             x,y+i); 
-
-                    if (collided) cpu->registers[0xF] = 1;
+                for (int row = 0; row < op.n; row++) {
+                    u8 byte = cpu->memory->ram[(int) (cpu->I.value + row)];
+                    if (draw_byte(cpu->screen, byte, x, (int) y + row))
+                        cpu->registers[0xF] = 1;
                 }
 
+
                 draw_matrix(cpu->screen);
+              
         
             }
             break;
@@ -141,9 +141,13 @@ void step(CPU *cpu){
                 cpu->PC.value = cpu->STACK[cpu->SP];
                 break;
             }
-            else{
+            else if(op.kk == 0xE0)
+            {
+                // clear the screen
+                clear_matrix(cpu->screen);
                 break;
             }
+           
         
         case 0x8:
             // many cases
