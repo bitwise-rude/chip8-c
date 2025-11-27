@@ -12,6 +12,7 @@ void make_cpu(CPU *cpu,struct Memory *mem,struct Screen *scrn){
         cpu->screen = scrn;
         cpu->PC=(REG16){.value=START};
         cpu->DT = 0;
+        cpu->is_halted = 0;
         cpu->dt_start = clock();
    
 }
@@ -39,9 +40,31 @@ void fill_opcode(Opcode *op_s, u8 *op_v){
 
 }
 
+void check_for_timers(CPU *cpu){
+        //check for timers:
+    //for dt
+    // TODO: if instruction take more than 16 ms to complete
+    if (cpu->DT != 0) {
+        float elapsed = (float)(clock() - cpu->dt_start) * 1000 / CLOCKS_PER_SEC; // ms
+        if (elapsed >= 16.667) {
+            cpu->DT--;
+            cpu->dt_start = clock(); 
+            
+        }
+    }
+}
+
 
 void step(CPU *cpu){
     // fetch the instruction
+    if(cpu->is_halted==1){
+        check_for_timers(cpu);
+        for(int i =0; i<16; i++){
+                        if(cpu->screen->key_states[i] == 1) cpu->is_halted = 0;
+                    }
+        return;
+    }
+
     u8 *opcode = get_from_ram(cpu->memory,cpu->PC.value);
 
     if (opcode == NULL){
@@ -261,14 +284,7 @@ void step(CPU *cpu){
 
             else if (op.kk == 0x0A){
                 //Wait for a key press, store the value of the key in Vx.
-                int running = 1;
-                while(running){
-                    for(int i =0; i<16; i++){
-                        if(cpu->screen->key_states[i] == 1) running = 0;
-                    }
-                    
-                    step_graphics(cpu->screen);
-                 }
+                cpu->is_halted = 1;
                  break;
             }
 
@@ -299,17 +315,6 @@ void step(CPU *cpu){
             printf("NOT IMPLEMENTED\n");
             exit(0);
     }
-
-    //check for timers:
-    //for dt
-    // TODO: if instruction take more than 16 ms to complete
-    if (cpu->DT != 0) {
-        float elapsed = (float)(clock() - cpu->dt_start) * 1000 / CLOCKS_PER_SEC; // ms
-        if (elapsed >= 16.667) {
-            cpu->DT--;
-            cpu->dt_start = clock(); 
-            
-        }
-    }
+    check_for_timers(cpu);
 
 }

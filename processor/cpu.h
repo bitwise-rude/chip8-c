@@ -34,6 +34,8 @@ typedef struct{
 
     struct Screen *screen;
 
+    u8 is_halted;
+
 }CPU;
 
 typedef struct 
