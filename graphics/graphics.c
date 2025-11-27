@@ -20,12 +20,21 @@ SDL_Keycode chip8_keymap[16] = {
 };
 
 void square_wave_playback(void *userdata, Uint8 *stream, int len){
-    static int toggle = 0;
+
+    static int phase = 0;
+    const int sample_rate = 44100;
+    const int half_period = sample_rate / (TONE * 2);
 
     for (int i = 0; i < len; i++) {
-        stream[i] = toggle ? 255 : 0; 
-        toggle = !toggle;
+        // high or low depending on phase
+        stream[i] = (phase < half_period) ? 255 : 0;
+
+        phase++;
+        if (phase >= half_period * 2) {
+            phase = 0;
+        }
     }
+
 }
 
 void initialize_window(Screen *screen){

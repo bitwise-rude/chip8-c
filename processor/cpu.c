@@ -60,9 +60,6 @@ void check_for_timers(CPU *cpu){
         if (elapsed >= 16.667) {
             cpu->DT--;
             cpu->dt_start = clock(); 
-
-            // alos play the sound
-
         }
 
     }
@@ -293,7 +290,7 @@ void step(CPU *cpu){
                 cpu->DT = cpu->registers[op.x];
                 break;
             }
-            else if (op.kk == 0x15){
+            else if (op.kk == 0x18){
                 //Set sound timer = Vx
                 cpu->ST = cpu->registers[op.x];
                 break;

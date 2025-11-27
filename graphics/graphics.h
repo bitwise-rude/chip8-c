@@ -13,6 +13,8 @@
 #define WIDTH (D_WIDTH*ENLARGEMENT)
 #define HEIGHT (D_HEIGHT * ENLARGEMENT)
 
+#define TONE 440 // in hertzz
+
 
 
 typedef uint8_t u8;
