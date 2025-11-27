@@ -24,17 +24,19 @@ http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
 - Timendus' CHIP-8 Test Suite
 https://github.com/Timendus/chip8-test-suite
 
-> These are life saver, I would encourage to use Timendus' tests to verify instructions are correctly being interpreted.
+> These are life saver, I would encourage to use Timendus' tests to verify whether instructions are correctly being interpreted or not.
 
 -----
 
-==Note: There are some instructions which differ from implementations and sources but they don't matter that much.==
+```diff
+- Note: There are some instructions which differ from implementations and sources but they don't matter that much. 
+```
 
 ------
 
 ## Building Requirements:
 1. SDL2 is needed since graphics depends upon it.
-2. Use any C compiler.
+2. Use any C compiler. [Change the `CC` variable in `Makefile` to match your compiler and also  flags if needed, defaults to GCC].
 3. Use makefile to build executable.
 
 ```bash
@@ -48,7 +50,7 @@ make
 ./chip8 roms/6-keypad.ch8
 ```
 
-> Other ROMs can be found through a simple google search.
+> Other ROMs can be found in the internet through a simple google search.
 
 ----
 
