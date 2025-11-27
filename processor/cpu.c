@@ -44,6 +44,10 @@ void step(CPU *cpu){
     // fetch the instruction
     u8 *opcode = get_from_ram(cpu->memory,cpu->PC.value);
 
+    if (opcode == NULL){
+        exit(1);
+    }
+
     // create the opcode
     Opcode op = (Opcode){};
     fill_opcode(&op,opcode);
@@ -122,9 +126,11 @@ void step(CPU *cpu){
 
         case 0x02:
             //Call subroutine at nnn.
+            if(cpu->SP < 0xF){
             cpu->STACK[cpu->SP] = cpu->PC.value;
             cpu->SP ++;
             cpu-> PC.value = op.nnn;
+            }
             break;
         
         case 0x0:
@@ -133,6 +139,9 @@ void step(CPU *cpu){
                 //Return from a subroutine.
                 cpu->SP--;
                 cpu->PC.value = cpu->STACK[cpu->SP];
+                break;
+            }
+            else{
                 break;
             }
         
@@ -225,7 +234,7 @@ void step(CPU *cpu){
             else if (op.kk == 0x29)
             {
                 //Set I = location of sprite for digit Vx. TODO
-                break;
+             
             }
             else if (op.kk == 0x15){
                 //Set delay timer = Vx
@@ -244,6 +253,10 @@ void step(CPU *cpu){
         
         case 0xE:
             // to implement
+          
+        
+        case 0xB:
+            cpu->PC.value = op.nnn + cpu->registers[0];
             break;
 
         default:

@@ -19,7 +19,7 @@ typedef struct Screen{
     SDL_Renderer *ren;
     SDL_Event e;
 
-    u8 display_grid[D_WIDTH][D_HEIGHT];
+    u8 display_grid[D_HEIGHT][D_WIDTH];
 
 }Screen;
 
@@ -27,3 +27,4 @@ void initialize_window(Screen *screen);
 int step_graphics(Screen *screen);
 void draw_matrix(Screen *screen);
 int draw_byte(Screen *scr, u8 byte_to_draw,u8 x,u8 y);
+void delete_everything(Screen *scr);

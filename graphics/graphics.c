@@ -1,6 +1,7 @@
 #include "graphics.h"
 
 void initialize_window(Screen *screen){
+
     if(SDL_Init(SDL_INIT_VIDEO) != 0){
         screen->win = NULL;
         return;
@@ -53,7 +54,11 @@ int draw_byte(Screen *scr, u8 byte_to_draw,u8 x,u8 y){
 
 void draw_matrix(Screen *scr)
 {
+    SDL_SetRenderDrawColor(scr->ren, 0, 0, 0, 255); 
+    SDL_RenderClear(scr->ren);
+
     SDL_SetRenderDrawColor(scr->ren, 0, 255, 0, 255); 
+
     for (int y = 0; y < D_HEIGHT; y++) {
             for (int x = 0; x < D_WIDTH; x++) {
                 if (scr->display_grid[x][y]) {
@@ -62,14 +67,12 @@ void draw_matrix(Screen *scr)
                 }
             }
         }
-
-        SDL_RenderPresent(scr->ren);
+        SDL_RenderPresent(scr->ren);  
 }
 
 int step_graphics(Screen *scr){
     if(SDL_PollEvent(&scr->e)){
         if(scr->e.type == SDL_QUIT){
-                delete_everything(scr);
                 return -1;
         }
     }

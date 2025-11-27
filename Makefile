@@ -5,7 +5,7 @@ SRC = main.c memory/memory.c processor/cpu.c graphics/graphics.c
 SDL_CFLAGS = $(shell sdl2-config --cflags)
 SDL_LDFLAGS = $(shell sdl2-config --libs)
 
-CFLAGS =  $(SDL_CFLAGS)
+CFLAGS = -g $(SDL_CFLAGS)
 LDFLAGS = $(SDL_LDFLAGS)
 
 OBJ = $(SRC:.c=.o)

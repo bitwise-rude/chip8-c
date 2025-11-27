@@ -66,13 +66,16 @@ int main(int argc, char *argv[]){
 
     
     //step
-    for(int i =0;i<=600000;i++){  
+    int running = 1;
+    while(running){  
           step(cpu);
 
-          if(!step_graphics(&screen)) show_err("Screen is closed");
+          int g = step_graphics(&screen);
+           if (g == -1) running = 0;
+
         }
 
-
+    delete_everything(&screen);
     
     return 0;
 }

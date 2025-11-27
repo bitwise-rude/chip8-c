@@ -36,7 +36,7 @@ void initialize_memory(Memory *memory){
 u8 *get_from_ram(Memory *ram, u16 addr){
     // when fetching opcode, this might cause an issue but whatever
 
-    if (addr >END) {printf("ILLEGAL INSTRUCTION\n");return 0;}
+    if (addr >END) {printf("ILLEGAL INSTRUCTION\n");return NULL;}
     else return &ram->ram[addr];
 }
 
