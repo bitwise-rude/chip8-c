@@ -10,7 +10,11 @@
 typedef struct Screen{
     SDL_Window *win;
     SDL_Renderer *ren;
+    SDL_Event e;
+
+    
 
 }Screen;
 
 void initialize_window(Screen *screen);
+int step_graphics(Screen *screen);

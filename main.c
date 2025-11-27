@@ -65,7 +65,13 @@ int main(int argc, char *argv[]){
     if(screen.win == NULL) show_err("Error while creating the window");
     
     //step
-    for(int i =0;i<=600000;i++){    step(cpu);}
+    for(int i =0;i<=600000;i++){  
+          step(cpu);
+
+          if(!step_graphics(&screen)) show_err("Screen is closed");
+        }
+
+
     
     return 0;
 }
