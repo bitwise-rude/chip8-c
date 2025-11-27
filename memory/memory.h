@@ -10,6 +10,8 @@ typedef uint8_t u8;
 typedef uint16_t u16;
 
 
+
+
 typedef struct Memory
 {
     size_t len; // length of ram from file

@@ -173,9 +173,11 @@ void step(CPU *cpu){
             }
             else if(op.n == 4){
                 // Set Vx = VX + Vy.
-                u16 sum = cpu->registers[op.x] + cpu->registers[op.y];
-                cpu->registers[0xF] = (sum > 0xFF) ? 1 : 0;
-                cpu->registers[op.x] = (uint8_t)sum;
+                u8 vx = cpu->registers[op.x];
+                u8 vy = cpu->registers[op.y];
+                uint16_t sum = vx + vy;
+                cpu->registers[0xF] = (sum > 0xFF) ? 1 : 0; // VF updated after addition
+                cpu->registers[op.x] = (u8)sum;
                 break;
             }
             else if(op.n == 5){
@@ -238,6 +240,7 @@ void step(CPU *cpu){
             else if (op.kk == 0x29)
             {
                 //Set I = location of sprite for digit Vx. TODO
+                
              
             }
             else if (op.kk == 0x15){
@@ -249,6 +252,9 @@ void step(CPU *cpu){
                 //Set Vx = delay timer value.
                 cpu->registers[op.x] = cpu->DT;
                 break;
+            }
+            else if (op.kk == 0x1E){
+                cpu->I.value += cpu->registers[op.x];
             }
 
         case 0xC:

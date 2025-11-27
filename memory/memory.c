@@ -14,10 +14,11 @@ void initialize_memory(Memory *memory){
     memset(ram,0,0x1000);
 
     // fill the interpreter area with nonsense value 
-    // TODO: change this to fill it with digits
     // for (int i=0; i<START;i++){
     //     ram[i] = 0x0;
     // }
+
+
 
     // filling the rest with our rom
     for (int i = 0; i < (int)memory->len; i++) {

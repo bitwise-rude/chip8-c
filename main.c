@@ -67,10 +67,9 @@ int main(int argc, char *argv[]){
     
     //step
     int running = 1;
-    int cycles = 0;
+  
     while(running){  
-        if (cycles<=20) step(cpu);
-        cycles+=1;
+        step(cpu);
 
           int g = step_graphics(&screen);
            if (g == -1) running = 0;
