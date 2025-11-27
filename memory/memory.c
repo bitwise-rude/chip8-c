@@ -18,7 +18,7 @@ void initialize_memory(Memory *memory){
     //     ram[i] = 0x0;
     // }
 
-
+    memcpy(ram,chip8_fontset, sizeof(chip8_fontset));
 
     // filling the rest with our rom
     for (int i = 0; i < (int)memory->len; i++) {
