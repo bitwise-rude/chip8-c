@@ -2,7 +2,7 @@
 
 #define TITLE "CHIP8"
 
-#define ENLARGEMENT 2
+#define ENLARGEMENT 15
 #define WIDTH (64*ENLARGEMENT)
 #define HEIGHT (32 * ENLARGEMENT)
 

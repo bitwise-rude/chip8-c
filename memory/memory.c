@@ -3,11 +3,12 @@
 #include <string.h>
 #include <stdlib.h>
 
-Memory *initialize_memory(Memory *memory){
+void initialize_memory(Memory *memory){
     // TODO: make digits later
     u8 *ram = malloc(0x1000);
     if (!ram) {
-        return NULL;
+        ram= NULL;
+        return;
     }
 
     memset(ram,0,0x1000);
@@ -19,7 +20,7 @@ Memory *initialize_memory(Memory *memory){
     // }
 
     // filling the rest with our rom
-    for (int i = 0; i < memory->len; i++) {
+    for (int i = 0; i < (int)memory->len; i++) {
         ram[START + i] = memory->ram[i];
     }
     
@@ -35,7 +36,7 @@ Memory *initialize_memory(Memory *memory){
 u8 *get_from_ram(Memory *ram, u16 addr){
     // when fetching opcode, this might cause an issue but whatever
 
-    if (addr >END) printf("ILLEGAL INSTRUCTION\n"); 
+    if (addr >END) {printf("ILLEGAL INSTRUCTION\n");return 0;}
     else return &ram->ram[addr];
 }
 
