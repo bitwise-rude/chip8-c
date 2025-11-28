@@ -77,6 +77,7 @@ int main(int argc, char *argv[]){
         }
 
     delete_everything(&screen);
+    free(memory->ram);
     
     return 0;
 }
